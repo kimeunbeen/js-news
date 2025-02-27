@@ -10,11 +10,31 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <script
+      src="https://kit.fontawesome.com/219d5a838e.js"
+      crossorigin="anonymous"
+    ></script>
 
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <section class="container">
+      <nav>
+        <section id="menu-board">
+          <i class="fa-solid fa-bars bar-icon" onclick="openMenu()"></i>
+          <div class="menu-box">
+            <i class="fa-solid fa-x x-icon" onclick="closeMenu()"></i>
+            <button>Business</button>
+            <button>Entertainment</button>
+            <button>General</button>
+            <button>Health</button>
+            <button>Science</button>
+            <button>Sports</button>
+            <button>Technology</button>
+          </div>
+        </section>
+      </nav>
+
       <section>
         <div>
           <button class="search-button">

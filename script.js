@@ -1,13 +1,18 @@
 const API_KEY = "eb0514986c0a4e94b99595bc04e58b9b";
 let newsList = [];
 
+const menuBox = document.querySelector(".menu-box");
+const barIcon = document.querySelector(".bar-icon");
+
 const getLatesNews = async () => {
   // const url = new URL(
   //   `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`
   // );
 
   // 제출용 url
-  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/`);
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
+  );
   const response = await fetch(url);
   const data = await response.json();
 
@@ -21,12 +26,14 @@ const getLatesNews = async () => {
 
 const render = () => {
   const newsHTML = newsList
-    .map(
-      (news) => `<div class="row news">
+    .map((news) => {
+      const urlImg = news.urlToImage
+        ? news.urlToImage
+        : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png";
+
+      return `<div class="row news">
           <div class="col-lg-4">
-            <img class="news-img-size" src=${
-              news.urlToImage || "img/no-image.svg"
-            } />
+            <img class="news-img-size" src=${urlImg} />
           </div>
           <div class="col-lg-8">
             <h2>${news.title}</h2>
@@ -41,11 +48,19 @@ const render = () => {
         news.publishedAt
       ).fromNow()}</div>
           </div>
-        </div>`
-    )
+        </div>`;
+    })
     .join("");
 
   document.getElementById("news-board").innerHTML = newsHTML;
 };
+
+function openMenu() {
+  document.querySelector(".menu-box").classList.add("show");
+}
+
+function closeMenu() {
+  document.querySelector(".menu-box").classList.remove("show");
+}
 
 getLatesNews();
