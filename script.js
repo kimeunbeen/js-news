@@ -6,6 +6,17 @@ let searchBox = document.querySelector(".search-input-box");
 const menuBox = document.querySelector(".menu-box");
 const barIcon = document.querySelector(".bar-icon");
 
+const menus = document.querySelectorAll(".menus button");
+menus.forEach((menu) =>
+  menu.addEventListener("click", (event) => getNewsByCategory(event))
+);
+
+const userInput = document.getElementById("input-box");
+userInput.addEventListener("keydown", function (e) {
+  if (e.key == "Enter") {
+    getNewsByKeyword();
+  }
+});
 const getLatesNews = async () => {
   // const url = new URL(
   //   `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`
@@ -71,3 +82,42 @@ const search = () => {
 };
 
 getLatesNews();
+
+//  메뉴버튼에 클릭이벤트 넣기
+
+const getNewsByCategory = async (event) => {
+  const category = event.target.textContent.toLowerCase();
+  // const url = new URL(
+  //   `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
+  // );
+
+  // 제출용 url
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
+  );
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  newsList = data.articles;
+  render();
+};
+
+// 검색버튼으로 키워드 검색하기
+const getNewsByKeyword = async () => {
+  const keyword = userInput.value;
+  // const url = new URL(
+  //   `https://newsapi.org/v2/top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
+  // );
+
+  // 제출용 url
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
+  );
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  newsList = data.articles;
+  render();
+};
