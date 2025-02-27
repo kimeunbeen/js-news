@@ -1,11 +1,16 @@
 .headline {
-  margin-top: 2em;
+  margin-top: 60px;
   display: flex;
   justify-content: center;
 }
 
 .headline svg {
   width: 450px;
+}
+
+nav {
+  display: flex;
+  position: relative;
 }
 
 .menus {
@@ -39,16 +44,50 @@
   border-bottom: 2px solid black;
 }
 
-.search-button {
-  width: 40px;
-  background: none;
-  border: none;
-  margin: 5px;
-  padding: 5px;
+/* 검색버튼  */
+.search-area {
+  position: absolute;
+  left: 1em;
+  margin-top: 10px;
 }
 
-.search-button:hover {
-  background-color: rgb(240, 240, 240);
+.search-box {
+  display: flex;
+  margin-top: 1em;
+  position: relative;
+}
+.search-box i {
+  cursor: pointer;
+  margin-right: 1em;
+  margin-left: 1em;
+}
+.search-input-box {
+  display: none;
+  margin-top: -0.5em;
+  position: absolute;
+  left: 2.5em;
+  width: 400px;
+}
+#input-box {
+  border: 1px solid #ebebeb;
+}
+#input-box:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #e3a5c7;
+  transition: 0.2s;
+}
+.btn-outline-success {
+  padding: 1px 4px;
+  position: absolute;
+  left: 190px;
+  background-color: #e3a5c7;
+  color: white;
+  border: #686868;
+}
+.btn-outline-success:hover {
+  background-color: white;
+  color: #e3a5c7;
 }
 
 /* 햄버거 아이콘 */
@@ -119,7 +158,12 @@
     display: block;
   }
 
-  .search-button {
-    display: none;
+  .headline svg {
+    width: 260px;
+    margin-bottom: 1em;
+  }
+  .search-area {
+    position: absolute;
+    left: 2em;
   }
 }

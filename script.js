@@ -1,5 +1,7 @@
 const API_KEY = "eb0514986c0a4e94b99595bc04e58b9b";
 let newsList = [];
+let searchToggle = false;
+let searchBox = document.querySelector(".search-input-box");
 
 const menuBox = document.querySelector(".menu-box");
 const barIcon = document.querySelector(".bar-icon");
@@ -55,12 +57,17 @@ const render = () => {
   document.getElementById("news-board").innerHTML = newsHTML;
 };
 
-function openMenu() {
+const openMenu = () => {
   document.querySelector(".menu-box").classList.add("show");
-}
+};
 
-function closeMenu() {
+const closeMenu = () => {
   document.querySelector(".menu-box").classList.remove("show");
-}
+};
+
+const search = () => {
+  searchBox.style.display =
+    searchBox.style.display === "block" ? "none" : "block";
+};
 
 getLatesNews();
