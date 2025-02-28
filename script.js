@@ -41,7 +41,9 @@ const getNews = async () => {
       if (data.articles.length === 0) {
         throw new Error("No result for this search");
       }
+
       newsList = data.articles;
+      console.log(newsList);
       render();
     } else {
       throw new Error(data.message);
@@ -60,7 +62,8 @@ const render = () => {
 
       return `<div class="row news">
           <div class="col-lg-4">
-            <img class="news-img-size" src=${urlImg} />
+            <img class="news-img-size" src=${urlImg} 
+            onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png';"/>
           </div>
           <div class="col-lg-8">
             <h2>${news.title}</h2>
