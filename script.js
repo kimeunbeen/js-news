@@ -5,11 +5,14 @@ let newsList = [];
 let searchToggle = false;
 let searchBox = document.querySelector(".search-input-box");
 
-const menuBox = document.querySelector(".menu-box");
 const barIcon = document.querySelector(".bar-icon");
 
 const menus = document.querySelectorAll(".menus button");
 menus.forEach((menu) =>
+  menu.addEventListener("click", (event) => getNewsByCategory(event))
+);
+const sideMenuBox = document.querySelectorAll(".side-menu-box button");
+sideMenuBox.forEach((menu) =>
   menu.addEventListener("click", (event) => getNewsByCategory(event))
 );
 
@@ -18,6 +21,9 @@ userInput.addEventListener("keydown", function (e) {
   if (e.key == "Enter") {
     getNewsByKeyword();
   }
+});
+userInput.addEventListener("focus", () => {
+  userInput.value = "";
 });
 
 // let url = new URL(
@@ -50,8 +56,8 @@ const getNews = async () => {
         throw new Error("No result for this search");
       }
 
-      console.log("rrr", response);
-      console.log("ddd", data);
+      // console.log("rrr", response);
+      // console.log("ddd", data);
       newsList = data.articles;
       totalResults = data.totalResults;
       render();
@@ -130,11 +136,20 @@ const getNewsByCategory = async (event) => {
   );
 
   getNews();
+
+  if (document.querySelector(".side-menu-box").classList.contains("show")) {
+    document.querySelector(".side-menu-box").classList.remove("show");
+  }
 };
 
 // 검색버튼으로 키워드 검색하기
 const getNewsByKeyword = async () => {
   const keyword = userInput.value;
+
+  if (keyword == "") {
+    userInput.focus();
+  }
+
   // url = new URL(
   //   `https://newsapi.org/v2/top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
   // );
@@ -177,16 +192,15 @@ const paginationRender = () => {
   for (let i = firstPage; i <= lastPage; i++) {
     paginationHTML += `<li class="page-item ${
       i === page ? "now-page" : ""
-    }" onclick="moveToPage(${i})"><a class="page-link" href="#">${i}</a></li>`;
+    }" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
   }
 
   paginationHTML += `<li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
+        <a class="page-link" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>`;
 
-  console.log(paginationHTML);
   document.querySelector(".pagination").innerHTML = paginationHTML;
 
   //   <nav aria-label="Page navigation example">
@@ -215,11 +229,11 @@ const moveToPage = (pageNum) => {
 /* 페이징 END */
 /* HTML 제어 START */
 const openMenu = () => {
-  document.querySelector(".menu-box").classList.add("show");
+  document.querySelector(".side-menu-box").classList.add("show");
 };
 
 const closeMenu = () => {
-  document.querySelector(".menu-box").classList.remove("show");
+  document.querySelector(".side-menu-box").classList.remove("show");
 };
 
 const search = () => {
