@@ -1,4 +1,6 @@
 const API_KEY = "eb0514986c0a4e94b99595bc04e58b9b";
+
+/* 변수선언&이벤트 START */
 let newsList = [];
 let searchToggle = false;
 let searchBox = document.querySelector(".search-input-box");
@@ -17,24 +19,36 @@ userInput.addEventListener("keydown", function (e) {
     getNewsByKeyword();
   }
 });
-const getLatesNews = async () => {
-  // const url = new URL(
-  //   `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`
-  // );
 
-  // 제출용 url
-  url = new URL(
-    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
-  );
-  const response = await fetch(url);
-  const data = await response.json();
+// let url = new URL(
+//   `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`
+// );
 
-  newsList = data.articles;
-  render();
-  console.log("response: ", response);
-  console.log("data: ", data);
+// 제출용 url
+let url = new URL(
+  `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
+);
 
-  console.log("news: ", newsList);
+/* 변수선언&이벤트 END */
+
+/* 공통 함수 START */
+const getNews = async () => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (response.status === 200) {
+      if (data.articles.length === 0) {
+        throw new Error("No result for this search");
+      }
+      newsList = data.articles;
+      render();
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    errorRender(error.message);
+  }
 };
 
 const render = () => {
@@ -68,6 +82,60 @@ const render = () => {
   document.getElementById("news-board").innerHTML = newsHTML;
 };
 
+const errorRender = (errorMessage) => {
+  const errorHTML = `<div class="alert alert-danger" role="alert">
+  ${errorMessage}
+</div>`;
+
+  document.getElementById("news-board").innerHTML = errorHTML;
+};
+
+/* 공통 함수 END */
+
+/* url 호출 함수 START */
+const getLatesNews = async () => {
+  // 제출용 url
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
+  );
+  getNews();
+};
+
+getLatesNews();
+
+//  카테코리로 뉴스 검색하기
+const getNewsByCategory = async (event) => {
+  const category = event.target.textContent.toLowerCase();
+  // url = new URL(
+  //   `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
+  // );
+
+  // 제출용 url
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
+  );
+
+  getNews();
+};
+
+// 검색버튼으로 키워드 검색하기
+const getNewsByKeyword = async () => {
+  const keyword = userInput.value;
+  // url = new URL(
+  //   `https://newsapi.org/v2/top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
+  // );
+
+  // 제출용 url
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
+  );
+
+  getNews();
+};
+
+/* url 호출 함수 END */
+
+/* HTML 제어 START */
 const openMenu = () => {
   document.querySelector(".menu-box").classList.add("show");
 };
@@ -80,44 +148,4 @@ const search = () => {
   searchBox.style.display =
     searchBox.style.display === "block" ? "none" : "block";
 };
-
-getLatesNews();
-
-//  메뉴버튼에 클릭이벤트 넣기
-
-const getNewsByCategory = async (event) => {
-  const category = event.target.textContent.toLowerCase();
-  // const url = new URL(
-  //   `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
-  // );
-
-  // 제출용 url
-  url = new URL(
-    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
-  );
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  newsList = data.articles;
-  render();
-};
-
-// 검색버튼으로 키워드 검색하기
-const getNewsByKeyword = async () => {
-  const keyword = userInput.value;
-  // const url = new URL(
-  //   `https://newsapi.org/v2/top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
-  // );
-
-  // 제출용 url
-  url = new URL(
-    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
-  );
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  newsList = data.articles;
-  render();
-};
+/* HTML 제어 END */

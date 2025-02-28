@@ -162,8 +162,13 @@ nav {
     width: 260px;
     margin-bottom: 1em;
   }
+
   .search-area {
     position: absolute;
     left: 2em;
+  }
+
+  .menus {
+    display: none;
   }
 }
