@@ -45,6 +45,7 @@ const groupSize = 5;
 /* 공통 함수 START */
 const getNews = async () => {
   try {
+    console.log("page", page);
     url.searchParams.set("page", page); // => &page=page url 호출전에 붙여서 fetch
     url.searchParams.set("pageSize", pageSize);
 
@@ -135,6 +136,8 @@ const getNewsByCategory = async (event) => {
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
   );
 
+  // 페이지 초기화
+  page = 1;
   getNews();
 
   if (document.querySelector(".side-menu-box").classList.contains("show")) {
@@ -159,6 +162,8 @@ const getNewsByKeyword = async () => {
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
   );
 
+  // 페이지 초기화
+  page = 1;
   getNews();
 };
 
