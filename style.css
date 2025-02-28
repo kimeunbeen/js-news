@@ -152,6 +152,24 @@ nav {
   background: #777;
 }
 
+.page-nav {
+  display: flex;
+  justify-content: center;
+
+  .page-area {
+    margin-top: 10px;
+
+    .now-page a {
+      background-color: #f8e3ef;
+    }
+
+    ul li a {
+      color: black;
+      font-weight: 600;
+    }
+  }
+}
+
 /* 모바일 화면에서만 햄버거 버튼 표시 */
 @media screen and (max-width: 768px) {
   .bar-icon {

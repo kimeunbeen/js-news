@@ -29,11 +29,19 @@ let url = new URL(
   `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
 );
 
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
+
 /* 변수선언&이벤트 END */
 
 /* 공통 함수 START */
 const getNews = async () => {
   try {
+    url.searchParams.set("page", page); // => &page=page url 호출전에 붙여서 fetch
+    url.searchParams.set("pageSize", pageSize);
+
     const response = await fetch(url);
     const data = await response.json();
 
@@ -42,9 +50,12 @@ const getNews = async () => {
         throw new Error("No result for this search");
       }
 
+      console.log("rrr", response);
+      console.log("ddd", data);
       newsList = data.articles;
-      console.log(newsList);
+      totalResults = data.totalResults;
       render();
+      paginationRender();
     } else {
       throw new Error(data.message);
     }
@@ -138,6 +149,70 @@ const getNewsByKeyword = async () => {
 
 /* url 호출 함수 END */
 
+/* 페이징 START */
+const paginationRender = () => {
+  // totalResults => api에서 제공
+  // page ,pageSize ,groupSize => 내가 지정
+  // pageGroup
+  const pageGroup = Math.ceil(page / groupSize);
+  // totalPages
+  const totalPages = Math.ceil(totalResults / pageSize);
+  // lastPage
+  let lastPage =
+    pageGroup * groupSize > totalPages ? totalPages : pageGroup * groupSize;
+  // 마지막페이지 그룹이 그룹사이즈보다 작을경우 => lastPage는 totalPage
+  // if (lastPage > totalPages) {
+  //   lastPage = totalPages;
+  // }
+  // firstPage
+  let firstPage =
+    lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
+
+  let paginationHTML = `<li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>`;
+
+  for (let i = firstPage; i <= lastPage; i++) {
+    paginationHTML += `<li class="page-item ${
+      i === page ? "now-page" : ""
+    }" onclick="moveToPage(${i})"><a class="page-link" href="#">${i}</a></li>`;
+  }
+
+  paginationHTML += `<li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>`;
+
+  console.log(paginationHTML);
+  document.querySelector(".pagination").innerHTML = paginationHTML;
+
+  //   <nav aria-label="Page navigation example">
+  //   <ul class="pagination">
+  //     <li class="page-item">
+  //       <a class="page-link" href="#" aria-label="Previous">
+  //         <span aria-hidden="true">&laquo;</span>
+  //       </a>
+  //     </li>
+  //     <li class="page-item"><a class="page-link" href="#">1</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">2</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">3</a></li>
+  // <li class="page-item">
+  //   <a class="page-link" href="#" aria-label="Next">
+  //     <span aria-hidden="true">&raquo;</span>
+  //   </a>
+  // </li>
+  //   </ul>
+  // </nav>
+};
+
+const moveToPage = (pageNum) => {
+  page = pageNum;
+  getNews();
+};
+/* 페이징 END */
 /* HTML 제어 START */
 const openMenu = () => {
   document.querySelector(".menu-box").classList.add("show");
