@@ -172,24 +172,24 @@ const getNewsByKeyword = async () => {
 const paginationRender = () => {
   // totalResults => api에서 제공
   // page ,pageSize ,groupSize => 내가 지정
-  // pageGroup
+  // 1.pageGroup
   const pageGroup = Math.ceil(page / groupSize);
-  // totalPages
+  console.log("pageGroup", pageGroup);
+  // 2.totalPages
   const totalPages = Math.ceil(totalResults / pageSize);
-  // lastPage
+  console.log("totalPages", totalPages);
+  // 3.lastPage
   let lastPage =
     pageGroup * groupSize > totalPages ? totalPages : pageGroup * groupSize;
   // 마지막페이지 그룹이 그룹사이즈보다 작을경우 => lastPage는 totalPage
-  // if (lastPage > totalPages) {
-  //   lastPage = totalPages;
-  // }
-  // firstPage
+
+  // 4.firstPage
   let firstPage =
     lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
 
   let paginationHTML = "";
 
-  if (page != 1) {
+  if (page != 1 && totalPages > 5) {
     paginationHTML = `<li class="page-item">
         <a class="page-link" onclick="moveToPage(1)">
           <span aria-hidden="true">&laquo;</span>
@@ -208,7 +208,7 @@ const paginationRender = () => {
     }" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
   }
 
-  if (page != totalPages) {
+  if (page != totalPages && totalPages > 5) {
     paginationHTML += `<li class="page-item">
         <a class="page-link" onclick="moveToPage(${page + 1})">
           <span>&gt;</span>
