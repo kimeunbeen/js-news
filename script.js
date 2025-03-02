@@ -191,12 +191,12 @@ const paginationRender = () => {
 
   if (page != 1) {
     paginationHTML = `<li class="page-item">
-        <a class="page-link" onclick="moveToPage(1)" href="#">
+        <a class="page-link" onclick="moveToPage(1)">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" onclick="moveToPage(${page - 1})" href="#">
+        <a class="page-link" onclick="moveToPage(${page - 1})">
           <span aria-hidden="true">&lt;</span>
         </a>
       </li>`;
