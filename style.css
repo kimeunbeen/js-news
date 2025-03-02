@@ -168,6 +168,10 @@ nav {
       color: black;
       font-weight: 600;
     }
+
+    ul li a:hover {
+      cursor: pointer;
+    }
   }
 }
 
